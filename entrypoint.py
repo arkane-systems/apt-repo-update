@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     logging.debug(github_token)
     logging.debug(supported_arch_list)
-    logging.debug(supported_version_list)
+    logging.debug(supported_distro_list)
 
     key_public = os.environ.get('INPUT_PUBLIC_KEY')
     key_private = os.environ.get('INPUT_PRIVATE_KEY')
@@ -40,3 +40,23 @@ if __name__ == '__main__':
     logging.debug(key_passphrase)
 
     logging.info('-- Done parsing input --')
+
+    # Clone repo
+
+    logging.info('-- Cloning current Github page --')
+
+    github_user = github_repo.split('/')[0]
+    github_slug = github_repo.split('/')[1]
+
+    if os.path.exists(github_slug):
+        shutil.rmtree(github_slug)
+
+    git_repo = git.Repo.clone_from(
+        'https://{}@github.com/{}.git'.format(github_token, github_repo),
+        github_slug,
+    )
+
+    git_refs = git_repo.remotes.origin.refs
+    git_refs_name = list(map(lambda x: str(x).split('/')[-1], git_refs))
+
+    logging.debug(git_refs_name)
