@@ -82,7 +82,7 @@ if __name__ == '__main__':
     gpg = gnupg.GPG()
     private_import_result = gpg.import_keys(private_key)
 
-    if private_import_result.count != 1
+    if private_import_result.count != 1:
       logging.error('Invalid private key provided; please provide 1 valid key.')
       sys.exit(1)
 
