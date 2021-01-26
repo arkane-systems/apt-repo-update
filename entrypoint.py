@@ -46,7 +46,7 @@ if __name__ == '__main__':
     logging.debug(key_private)
     logging.debug(key_passphrase)
 
-#    logging.info('-- Done parsing input --')
+    logging.info('-- Done parsing input --')
 
     # Clone repo
 
@@ -95,8 +95,6 @@ if __name__ == '__main__':
 
     private_key_id = private_import_result.results[0]['fingerprint']
 
-    logging.info('Using key:', private_key_id)
-
     # Signing to unlock key on gpg agent
     gpg.sign('test', keyid=private_key_id, passphrase=key_passphrase)
 
@@ -105,6 +103,8 @@ if __name__ == '__main__':
     # Process files.
 
     logging.info('-- Processing updates --')
+
+    logging.debug(os.cwd())
 
     # Enumerate files.
     files = [f for f in os.listdir(update_dir) if os.path.isfile(f) and pathlib.Path(f).suffix == ".deb"]
