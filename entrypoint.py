@@ -3,6 +3,7 @@ import git
 import gnupg
 import json
 import logging
+import pathlib
 import re
 import shutil
 
@@ -38,13 +39,11 @@ if __name__ == '__main__':
     logging.debug(supported_arch_list)
     logging.debug(supported_distro_list)
 
-#    key_public = os.environ.get('INPUT_PUBLIC_KEY')
-#    key_private = os.environ.get('INPUT_PRIVATE_KEY')
-#    key_passphrase = os.environ.get('INPUT_KEY_PASSPHRASE')
+    key_private = os.environ.get('INPUT_PRIVATE_KEY')
+    key_passphrase = os.environ.get('INPUT_KEY_PASSPHRASE')
 
-#    logging.debug(key_public)
-#    logging.debug(key_private)
-#    logging.debug(key_passphrase)
+    logging.debug(key_private)
+    logging.debug(key_passphrase)
 
 #    logging.info('-- Done parsing input --')
 
@@ -70,10 +69,44 @@ if __name__ == '__main__':
 
     logging.info('-- Done cloning current Github page --')
 
+    # Set directories
+    update_dir = github_slug + '/' + update_folder
+    apt_dir = github_slug + '/' + apt_folder
+
+    os.chdir(apt_dir)
+
+    # Prepare key
+
+    logging.info('-- Importing and preparing GPG key --')
+
+    gpg = gnupg.GPG()
+    private_import_result = gpg.import_keys(private_key)
+
+    if private_import_result.count != 1
+      logging.error('Invalid private key provided; please provide 1 valid key.')
+      sys.exit(1)
+
+    logging.debug(private_import_result)
+
+    if not any(data['ok'] >= '16' for data in private_import_result.results):
+        logging.error('Key provided is not a secret key')
+        sys.exit(1)
+
+    private_key_id = private_import_result.results[0]['fingerprint']
+
+    logging.info('Using key:', private_key_id)
+
+    # Signing to unlock key on gpg agent
+    gpg.sign('test', keyid=private_key_id, passphrase=key_passphrase)
+
+    logging.info('-- Done importing key --')
+
     # Process files.
 
     logging.info('-- Processing updates --')
 
-    # Generate metadata
-    os.chdir(github_slug + '/' + update_folder)
-    logging.debug(os.listdir())
+    # Enumerate files.
+    files = [f for f in os.listdir(update_dir) if os.path.isfile(f) and pathlib.Path(f).suffix == ".deb"]
+    for file in files:
+
+        logging.info('Currently processing: ', file)
