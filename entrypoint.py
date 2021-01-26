@@ -6,6 +6,7 @@ import logging
 import pathlib
 import re
 import shutil
+import sys
 
 from debian.debfile import DebFile
 
