@@ -4,6 +4,32 @@ inputs:
   debug:
     description: "Print debug log"
     required: false
+  github_token:
+    description: "GitHub token with commit and push scope."
+    required: true
+  repo_supported_arch:
+    description: "Newline-delimited list of supported architectures."
+    required: true
+  repo_supported_distro:
+    description: "Newline-delimited list of supported distributions."
+    required: true
+  repo_directory:
+    description: "Location of APT repo folder relative to git repo root."
+    required: false
+    default: "apt"
+  update_directory:
+    description: "Directory in which updated packages are placed."
+    required: false
+    default: "updates"
+  public_key:
+    description: "GPG public key for apt repo"
+    required: false
+  private_key:
+    description: "GPG private key for signing apt repo"
+    required: false
+  key_passphrase:
+    description: "Passphrase of GPG private key"
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
