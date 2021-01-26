@@ -1,0 +1,12 @@
+name: "Update APT repo"
+description: "Update APT repo on GitHub pages with new packages."
+inputs:
+  debug:
+    description: "Print debug log"
+    required: false
+runs:
+  using: "docker"
+  image: "Dockerfile"
+branding:
+  icon: "upload-cloud"
+  color: "blue"
