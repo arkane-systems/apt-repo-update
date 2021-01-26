@@ -104,7 +104,7 @@ if __name__ == '__main__':
 
     logging.info('-- Processing updates --')
 
-    logging.debug(os.cwd())
+    logging.debug(os.getcwd())
 
     # Enumerate files.
     files = [f for f in os.listdir(update_dir) if os.path.isfile(f) and pathlib.Path(f).suffix == ".deb"]
