@@ -21,9 +21,6 @@ inputs:
     description: "Directory in which updated packages are placed."
     required: false
     default: "updates"
-  public_key:
-    description: "GPG public key for apt repo"
-    required: false
   private_key:
     description: "GPG private key for signing apt repo"
     required: false
