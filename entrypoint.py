@@ -74,8 +74,6 @@ if __name__ == '__main__':
     update_dir = os.path.abspath(os.path.join(github_slug, update_folder))
     apt_dir = os.path.abspath(os.path.join(github_slug, apt_folder))
 
-    os.chdir(apt_dir)
-
     # Prepare key
 
     logging.info('-- Importing and preparing GPG key --')
@@ -104,11 +102,10 @@ if __name__ == '__main__':
 
     logging.info('-- Processing updates --')
 
-    logging.debug(os.getcwd())
-    logging.debug(update_dir)
+    os.chdir(update_dir)
 
     # Enumerate files.
-    files = [f for f in os.listdir(update_dir) if os.path.isfile(f)] # and pathlib.Path(f).suffix == ".deb"]
+    files = [f for f in os.listdir() if os.path.isfile(f)] and pathlib.Path(f).suffix == ".deb"]
     for file in files:
 
         logging.info('Currently processing: ', file)
