@@ -108,6 +108,11 @@ if __name__ == '__main__':
     # Enumerate and add files (deb packages).
 
     files = [f for f in os.listdir() if os.path.isfile(f) and pathlib.Path(f).suffix == ".deb"]
+
+    if len(files) == 0:
+        logging.info ('Nothing to do')
+        sys.exit(0)
+
     for file in files:
 
         for distro in supported_distro_list:
