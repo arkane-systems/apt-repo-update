@@ -23,10 +23,10 @@ inputs:
     default: "updates"
   private_key:
     description: "GPG private key for signing apt repo"
-    required: false
+    required: true
   key_passphrase:
     description: "Passphrase of GPG private key"
-    required: false
+    required: true
 runs:
   using: "docker"
   image: "Dockerfile"
