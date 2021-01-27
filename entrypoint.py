@@ -36,15 +36,15 @@ if __name__ == '__main__':
     supported_arch_list = supported_arch.strip().split('\n')
     supported_distro_list = supported_distro.strip().split('\n')
 
-    logging.debug(github_token)
+#    logging.debug(github_token)
     logging.debug(supported_arch_list)
     logging.debug(supported_distro_list)
 
     key_private = os.environ.get('INPUT_PRIVATE_KEY')
     key_passphrase = os.environ.get('INPUT_KEY_PASSPHRASE')
 
-    logging.debug(key_private)
-    logging.debug(key_passphrase)
+#    logging.debug(key_private)
+#    logging.debug(key_passphrase)
 
     logging.info('-- Done parsing input --')
 
@@ -105,6 +105,7 @@ if __name__ == '__main__':
     logging.info('-- Processing updates --')
 
     logging.debug(os.getcwd())
+    logging.debug(update_dir)
 
     # Enumerate files.
     files = [f for f in os.listdir(update_dir) if os.path.isfile(f) and pathlib.Path(f).suffix == ".deb"]
