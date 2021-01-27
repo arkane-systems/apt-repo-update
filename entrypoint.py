@@ -71,8 +71,8 @@ if __name__ == '__main__':
     logging.info('-- Done cloning current Github page --')
 
     # Set directories
-    update_dir = github_slug + '/' + update_folder
-    apt_dir = github_slug + '/' + apt_folder
+    update_dir = os.path.abspath(os.path.join(github_slug, update_folder))
+    apt_dir = os.path.abspath(os.path.join(github_slug, apt_folder))
 
     os.chdir(apt_dir)
 
@@ -111,3 +111,17 @@ if __name__ == '__main__':
     for file in files:
 
         logging.info('Currently processing: ', file)
+
+        # Generate metadata
+        deb_file_handle = DebFile(filename=file)
+        deb_file_control = deb_file_handle.debcontrol()
+
+        current_metadata = {
+            'format_version': 1,
+            'sw_version': deb_file_control['Version'],
+            'sw_architecture': deb_file_control['Architecture'],
+            'linux_distro': deb_file_version
+        }
+
+        current_metadata_str = json.dumps(current_metadata)
+        logging.debug('Metadata {}'.format(current_metadata_str))
