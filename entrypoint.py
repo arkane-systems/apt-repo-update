@@ -66,7 +66,7 @@ if __name__ == '__main__':
     git_refs = git_repo.remotes.origin.refs
     git_refs_name = list(map(lambda x: str(x).split('/')[-1], git_refs))
 
-    if repo.head.commit.author.email == '{}@users.noreply.github.com'.format(github_user):
+    if git_repo.head.commit.author.email == '{}@users.noreply.github.com'.format(github_user):
         logging.info ('Last commit was by this action; nothing to do')
         sys.exit(0)
 
