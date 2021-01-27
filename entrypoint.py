@@ -66,6 +66,10 @@ if __name__ == '__main__':
     git_refs = git_repo.remotes.origin.refs
     git_refs_name = list(map(lambda x: str(x).split('/')[-1], git_refs))
 
+    if repo.head.commit.author.email == '{}@users.noreply.github.com'.format(github_user):
+        logging.info ('Last commit was by this action; nothing to do')
+        sys.exit(0)
+
     logging.debug(git_refs_name)
 
     logging.info('-- Done cloning current Github page --')
@@ -142,7 +146,7 @@ if __name__ == '__main__':
 
     git_repo.git.add('*')
     git_repo.index.commit(
-        '[apt-action] Update apt repo with last pushed updates'
+        '[apt-action] Update apt repo with last pushed updates.'
     )
 
     git_repo.git.push('--set-upstream', 'origin', 'master')
