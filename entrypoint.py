@@ -93,9 +93,6 @@ if __name__ == '__main__':
 
     private_key_id = private_import_result.results[0]['fingerprint']
 
-    # Signing to unlock key on gpg agent
-    gpg.sign('test', keyid=private_key_id, passphrase=key_passphrase)
-
     logging.info('-- Done importing key --')
 
     # Process files.
@@ -104,22 +101,50 @@ if __name__ == '__main__':
 
     os.chdir(update_dir)
 
-    # Enumerate files.
+    # Enumerate and add files (deb packages).
+
     files = [f for f in os.listdir() if os.path.isfile(f) and pathlib.Path(f).suffix == ".deb"]
     for file in files:
 
-        logging.info('Currently processing: ', file)
+        for distro in supported_distro_list:
+            # Add to repo
+            logging.info('Adding binary package {} to repo {}'.format(file, distro))
 
-        # Generate metadata
-        deb_file_handle = DebFile(filename=file)
-        deb_file_control = deb_file_handle.debcontrol()
+            os.system(
+                'reprepro -b {} --export=silent-never includedeb {} {}'.format(
+                    apt_dir,
+                    distro,
+                    file
+                )
+            )
 
-        current_metadata = {
-            'format_version': 1,
-            'sw_version': deb_file_control['Version'],
-            'sw_architecture': deb_file_control['Architecture'],
-            'linux_distro': deb_file_version
-        }
+        os.remove (file)
 
-        current_metadata_str = json.dumps(current_metadata)
-        logging.debug('Metadata {}'.format(current_metadata_str))
+    # TODO: handle source (dsc) packages
+
+    # Exporting and signing repo
+
+    logging.info('-- Exporting and signing repo --')
+
+    gpg.sign('test', keyid=private_key_id, passphrase=key_passphrase)
+
+    os.system('reprepro -b {} export'.format(apt_dir))
+
+    logging.info('-- Done exporting and signing repo --')
+
+    # Commiting and push changes
+
+    logging.info('-- Saving changes --')
+
+    git_repo.config_writer().set_value(
+        'user', 'email', '{}@users.noreply.github.com'.format(github_user)
+    )
+
+    git_repo.git.add('*')
+    git_repo.index.commit(
+        '[apt-action] Update apt repo with last pushed updates'
+    )
+
+    git_repo.git.push('--set-upstream', 'origin', 'master')
+
+    logging.info('-- Done saving changes --')
