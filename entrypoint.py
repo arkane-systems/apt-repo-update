@@ -108,7 +108,7 @@ if __name__ == '__main__':
     logging.debug(update_dir)
 
     # Enumerate files.
-    files = [f for f in os.listdir(update_dir) if os.path.isfile(f) and pathlib.Path(f).suffix == ".deb"]
+    files = [f for f in os.listdir(update_dir) if os.path.isfile(f)] # and pathlib.Path(f).suffix == ".deb"]
     for file in files:
 
         logging.info('Currently processing: ', file)
