@@ -5,9 +5,9 @@ Very loosely based on https://github.com/jrandiny/apt-repo-action
 
 ## Configuration
 
-**debug***
+**debug**
 
-[Not required] Print debugging information (true/false**.
+[Not required] Print debugging information (true/false).
 
 **github_token**
 
@@ -27,7 +27,7 @@ Location of the APT repo folder relative to the Git repo root. The APT repositor
 
 **update_directory**
 
-Location of the update folder relative to the Git repo root. Packages placed in this directory and committed will automatically be added to the repository and deleted from this folder when the action runs. Defaults to "updates** if not specified.
+Location of the update folder relative to the Git repo root. Packages placed in this directory and committed will automatically be added to the repository and deleted from this folder when the action runs. Defaults to "updates" if not specified.
 
 **private_key**
 
