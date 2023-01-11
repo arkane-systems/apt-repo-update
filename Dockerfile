@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye-slim
 
 LABEL maintainer="Alistair Young <avatar@arkane-systems.net>"
 
