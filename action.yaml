@@ -7,6 +7,14 @@ inputs:
   github_token:
     description: "GitHub token with commit and push scope."
     required: true
+  git_commit_message:
+    description: "Git commit message."
+    required: false
+    default: "[apt-action] Update apt repo with last pushed updates."
+  git_push_branch:
+    description: "Git branch to push to."
+    required: false
+    default: "master"
   repo_supported_arch:
     description: "Newline-delimited list of supported architectures."
     required: true

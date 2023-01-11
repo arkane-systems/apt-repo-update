@@ -26,6 +26,12 @@ if __name__ == "__main__":
 
     github_repo = os.environ.get("GITHUB_REPOSITORY")
 
+    git_commit_message = os.environ.get(
+        "INPUT_GIT_COMMIT_MESSAGE",
+        "[apt-action] Update apt repo with last pushed updates.",
+    )
+    git_push_branch = os.environ.get("INPUT_GIT_PUSH_BRANCH", "master")
+
     apt_folder = os.environ.get("INPUT_REPO_DIRECTORY", "apt")
     update_folder = os.environ.get("INPUT_UPDATE_DIRECTORY", "updates")
 
@@ -149,8 +155,8 @@ if __name__ == "__main__":
     )
 
     git_repo.git.add("*")
-    git_repo.index.commit("[apt-action] Update apt repo with last pushed updates.")
+    git_repo.index.commit(git_commit_message)
 
-    git_repo.git.push("--set-upstream", "origin", "master")
+    git_repo.git.push("--set-upstream", "origin", git_push_branch)
 
     logging.info("-- Done saving changes --")
