@@ -13,6 +13,14 @@ Very loosely based on https://github.com/jrandiny/apt-repo-action
 
 A personal access token to the repo with commit and push scope. Use a repository secret.
 
+**git_commit_message**
+
+Message used when committing to git repo. Defaults to "[apt-action] Update apt repo with last pushed updates." if not specified.
+
+**git_push_branch**
+
+Git repo branch to push to. Defaults to "master" if not specified.
+
 **repo_supported_arch**
 
 Newline-delimited list of supported architectures.
